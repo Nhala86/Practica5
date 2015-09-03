@@ -29,11 +29,14 @@ int main(){
 	int opcion;
 	
 	if (!arrancar (gestor, DOMINIO)){
-		cout << " Error!.. no se ha podido cargar el fichero" << endl;
+		cout << "Error!.. no se han podido cargar el/los fichero/s" << endl;
+		cout << "Se iniciara el programa cn nuevas listas" << endl;
+		system("pause");
+		
 	}
 	do{
+		system("cls");
 		opcion = menu(opcion);
-		system ("cls");
 		switch (opcion){
 			case 1: if (iniciarSesion (gestor)){ // Al iniciar sesion cargara el correo del usuario correspondiente, si el usuario no existe le devolvera un mensaje de "Usuario no existente"
 						gestionarSesion (gestor);

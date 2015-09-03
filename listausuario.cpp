@@ -52,9 +52,11 @@ bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario){
 	bool esAniadir = false;
 	int posicion;
 	if(usuarios.contador < MAX_USUARIOS){
-		usuarios.usuario[usuarios.contador] = new tUsuario(usuario);
+		buscarUsuario(usuarios, usuario.nombre, posicion);
+		for(int i = usuarios.contador; i > posicion; i--)
+			usuarios.usuario[i] = usuarios.usuario[i - 1];
+		usuarios.usuario[posicion] = new tUsuario(usuario);
 		usuarios.contador++;
-		ordenar (usuarios);
 		esAniadir = true;
 	}
 	return esAniadir;
@@ -80,18 +82,6 @@ bool buscarUsuario (const tListaUsuarios & usuarios, string id, int & posicion){
 	return encontrado;
 }
 
-void ordenar (tListaUsuarios & usuarios){
-	tUsuarioPtr nuevo;
-	int posicion = 0;
-	nuevo = usuarios.usuario[usuarios.contador - 1];	
-	while ((posicion < usuarios.contador -1) && !(usuarios.usuario[posicion]->nombre > nuevo->nombre)){
-		posicion ++;
-	}
-	for (int j = usuarios.contador - 1; j > posicion; j--){
-		usuarios.usuario[j] = usuarios.usuario[j - 1];
-	}
-	usuarios.usuario[posicion] = nuevo;
-}
 
 void destruir (tListaUsuarios & usuarios){
 	for (int i = 0; i < usuarios.contador; i++){

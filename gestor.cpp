@@ -49,12 +49,13 @@ bool crearCuenta(tGestor & gestor){
 	    cout << "Iniciando sesion en " << gestor.dominio << endl;
 	    buscarUsuario(gestor.usuarios, id, gestor.usuarioActivo);
 	} 
-	else cout << "No se puede aniadir a la lista";
+	else cout << "No se puede aniadir nuevos usuarios" << endl;
 	system("pause");
 	return ok;
 }
 
 bool iniciarSesion (tGestor & gestor){
+	system("cls");
 	bool ok = false;
 	int posicion;
 	string id, contrasenia;
@@ -68,16 +69,15 @@ bool iniciarSesion (tGestor & gestor){
 		cin >> contrasenia;
 		if (validarContrasenia(*gestor.usuarios.usuario[posicion], contrasenia)){
 			gestor.usuarioActivo = posicion;
-			cout << "Iniciando sesion" << endl;;
+			cout << "Iniciando sesion de " << gestor.usuarios.usuario[posicion]->nombre << endl;;
 			ok = true;
 		}
-		else cout << "No se pudo iniciar sesion" << endl;
+		else cout << "contrasenia incorrecta" << endl;
 	}
 	else {
-		cout << "Usuario no existente" << endl;
+		cout << "Usuario no existe" << endl;
 	}
 	system("pause");
-	system("cls");
 	return ok;
 }
 
@@ -86,7 +86,7 @@ void leerCorreo(tGestor & gestor, tListaRegistros & listaReg){
 	string fila, cabecera;
 	int mail, opcion, posicion;
 	
-	cout << "Cual correo deseas leer (escribe el numero del correo): ";
+	cout << "Indique el nuemero del correo: ";
 	cin >> mail;
 	system("cls");
 	if (mail > 0 && mail <= listaReg.contador){
@@ -117,10 +117,10 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 		insertar (gestor.usuarios.usuario[gestor.usuarioActivo]->enviados, registro);
 		registro.leido = false;
 		insertar (gestor.usuarios.usuario[posicion]->recibidos, registro);
-		cout << "Correo enviado" << endl;
+		cout << "Correo enviado correctamente" << endl;
     }
 	else {
-		cout << "Destinatario desconocido. No se ha podido encontrar" << endl;
+		cout << "Destinatario no existe" << endl;
 	}
 }
 
@@ -141,15 +141,18 @@ void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
 }
 
 void lecturaRapida(tGestor & gestor, tListaRegistros & listaReg){
+	system ("cls");
 	int posicion;
-	ordenar_AF (gestor.correos);
+	tListaCorreos aux;
+	aux = gestor.correos;
+	ordenar_AF (aux);
 	for (int i = 0; i < listaReg.contador; i++){
-		if (!listaReg.registro[i].leido){ // falta signo de ! para que funcione
-			buscar (gestor.correos, listaReg.registro[i].idcorreo, posicion);
-			cout << aCadena(gestor.correos.correo[posicion]);
-			listaReg.registro[i].leido = true;
+		if (!listaReg.registro[i].leido){
+			buscar (aux, listaReg.registro[i].idcorreo, posicion);
+			cout << aCadena(aux.correo[posicion]);
+			lineaDeSeparacion();
+			correoLeido(gestor.usuarios.usuario[gestor.usuarioActivo]->recibidos, listaReg.registro[i].idcorreo);
 		}
-		else cout << "error";
 	}
 	system("pause");
 }
@@ -158,7 +161,8 @@ void gestionarSesion(tGestor & gestor){
 	tCorreo nuevoCorreo;
 	bool esEntrada = true;
 	int opcion;
-	do{
+	do{	
+		system("cls");
 		mostrarInterFazUsuario(gestor,esEntrada);
 		cin >> opcion;
 		if (opcion == 1){
@@ -173,7 +177,6 @@ void gestionarSesion(tGestor & gestor){
 			system("cls");
 			correoNuevo (nuevoCorreo, gestor.usuarios.usuario[gestor.usuarioActivo]->nombre);
 			enviarCorreo(gestor, nuevoCorreo);
-			system ("pause");
 		}
 		else if (opcion == 3){
 			if(esEntrada){
@@ -226,7 +229,7 @@ void verBandeja (const tGestor & gestor, bool esEntrada){
 	if (!esEntrada){
 		for (int i = 0; i < usuario->enviados.contador; i++){
 			if (buscar (gestor.correos, usuario->enviados.registro[i].idcorreo, posicion)){
-				cout << " " << setw(2) << i + 1 << " " << gestor.correos.correo[posicion].destinatario << setw(25) << gestor.correos.correo[posicion].asunto << setw(35) << mostrarSoloDia (gestor.correos.correo[posicion].fecha) << endl;
+				cout << setw(2) << i + 1 << " " << gestor.correos.correo[posicion].destinatario << setw(25) << gestor.correos.correo[posicion].asunto << setw(30) << mostrarSoloDia (gestor.correos.correo[posicion].fecha) << endl;
 			}
 		}
 	}
@@ -239,7 +242,7 @@ void verBandeja (const tGestor & gestor, bool esEntrada){
 				cout << "*";
 			}
 			if (buscar (gestor.correos, usuario->recibidos.registro[i].idcorreo, posicion)){
-				cout << setw(2) << i + 1 << " " << gestor.correos.correo[posicion].emisor << setw(25) << gestor.correos.correo[posicion].asunto << setw(35)<< mostrarSoloDia (gestor.correos.correo[posicion].fecha) << endl;
+				cout << setw(2) << i + 1 << " " << gestor.correos.correo[posicion].emisor << setw(25) << gestor.correos.correo[posicion].asunto << setw(30)<< mostrarSoloDia (gestor.correos.correo[posicion].fecha) << endl;
 			}
 		}
 	}

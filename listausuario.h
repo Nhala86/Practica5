@@ -8,7 +8,7 @@ using namespace std;
  // Declaro las constantes para el maximo de usuarios y el nombre de .txt
  
 const string listaUsuarios = "Usuarios.txt";
-const int MAX_USUARIOS = 50;
+const int MAX_USUARIOS = 2;
 
 // Declaro la estructura que tiene la lista de usuarios
 
@@ -51,11 +51,7 @@ bool aniadir (tListaUsuarios & usuarios, const tUsuario & usuario);
 
 bool buscarUsuario (const tListaUsuarios & usuarios, string id, int & posicion);
 
-/**
-** Ordena los usuarios segun su posicion
-**/
 
-void ordenar (tListaUsuarios & usuarios);
 
 /**
 ** Recorre cada una de las listas que tiene la estructura tUsuario y las elimina para poder liberar el espacio cuando elimine el usuario entero

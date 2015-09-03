@@ -77,7 +77,7 @@ string aCadena (const tCorreo & correo){
 
 string obtenerCabecera(const tCorreo & correo){
 	string informacion;
-	informacion = "Correo de: " + correo.emisor + " ";
+	informacion = "De: " + correo.emisor + "\t";
 	informacion += mostrarFecha(correo.fecha) + "\n";
 	informacion += "Para: " + correo.destinatario + "\n";
 	informacion += "Asunto: " + correo.asunto + "\n" + "\n";
@@ -109,7 +109,7 @@ void guardar(const tCorreo & correo, ofstream & archivo){
 	archivo << correo.emisor << endl;
 	archivo << correo.destinatario << endl;
 	archivo << correo.asunto << endl;
-	archivo << correo.contenido << endl;
+	archivo << correo.contenido;
 	archivo << "X" << endl;	
 }
 

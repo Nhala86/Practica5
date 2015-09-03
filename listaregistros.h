@@ -5,7 +5,7 @@ using namespace std;
 
 // Declaro la constante de los registros inicialies que puede tener la lista de registros
 
-const int REG_INICIAL = 10;
+const int REG_INICIAL = 1;
 
 // Defino la estructura que tiene un registro: una identificacion de correo y un boleano encargado de decir: 0 si ha sido leido el mensaje o 1 si no ha sido leido
 

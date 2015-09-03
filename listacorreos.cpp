@@ -32,8 +32,7 @@ bool cargar(tListaCorreos & correos, string dominio){
 		archivo.close();
 		esCargar = true;		
 	}
-	else{		
-		cout << "No se ha podido cargar el archivo";
+	else{
 		inicializar(correos, MAIL_INICIAL);
 		esCargar = false;
 	}
