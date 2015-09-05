@@ -60,8 +60,8 @@ void insertar(tListaCorreos & correos, const tCorreo & correo){
 	if (correos.contador == correos.capacidad){
 		redimensionar (correos);
 	}
-		buscarUsuario(correos, correo.nombre, posicion);
-		for(int i = usuarios.contador; i > posicion; i--)
+		buscar(correos, correo.identificador, posicion);
+		for(int i = correos.contador; i > posicion; i--)
 			correos.correo[i] = correos.correo[i - 1];
 		correos.correo[posicion] = correo;
 		correos.contador++;
@@ -80,6 +80,19 @@ bool buscar (const tListaCorreos & correos, string id, int & pos){
 		}
 	}
 	return encontrado;
+}
+
+bool borrar(tListaCorreos &correos, string id){
+	bool borrado = false;
+	int posicion;
+	if(buscar(correos, id , posicion)){
+				for (posicion; posicion < correos.contador; posicion++){
+						correos.correo[posicion] = correos.correo[posicion+1];
+					}
+		correos.contador--;
+		borrado = true;
+	}
+return borrado;
 }
 
 void ordenar_AF(tListaCorreos & correos){

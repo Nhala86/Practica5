@@ -52,6 +52,8 @@ void insertar(tListaCorreos & correos, const tCorreo & correo);
 ** Si no existe en la lista, la posición que le correspondería y el valor false
 **/
 
+bool borrar(tListaCorreos &correos, string id);
+
 bool buscar (const tListaCorreos & correos, string id, int & pos);
 
 /**

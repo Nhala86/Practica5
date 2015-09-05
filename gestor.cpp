@@ -14,7 +14,7 @@ bool arrancar (tGestor & gestor, string dominio){
 	inicializar (gestor, DOMINIO);
 	return (cargar(gestor.usuarios, dominio) & cargar (gestor.correos, dominio));
 }
- 
+
 void apagar(const tGestor & gestor){
 	system("cls");
 	cout << " Cerrando gestor de correo " << gestor.dominio << endl;
@@ -27,7 +27,7 @@ bool crearCuenta(tGestor & gestor){
 	bool ok = false;
 	int posicion;
 	string id, contrasenia;
-	
+
 	cout << "Selecciona tu id: ";
 	cin >> id;
 	cin.sync();
@@ -48,7 +48,7 @@ bool crearCuenta(tGestor & gestor){
 		cout << "Se creo correctamente su cuenta" << endl;
 	    cout << "Iniciando sesion en " << gestor.dominio << endl;
 	    buscarUsuario(gestor.usuarios, id, gestor.usuarioActivo);
-	} 
+	}
 	else cout << "No se puede aniadir nuevos usuarios" << endl;
 	system("pause");
 	return ok;
@@ -59,7 +59,7 @@ bool iniciarSesion (tGestor & gestor){
 	bool ok = false;
 	int posicion;
 	string id, contrasenia;
-	
+
 	cout << "Bienvenido a tu correo " << gestor.dominio << endl;
 	cout << "Introduce tu direccion de correo: ";
 	cin >> id;
@@ -85,7 +85,7 @@ void leerCorreo(tGestor & gestor, tListaRegistros & listaReg){
 	tCorreo respuestaMail;
 	string fila, cabecera;
 	int mail, opcion, posicion;
-	
+
 	cout << "Indique el nuemero del correo: ";
 	cin >> mail;
 	system("cls");
@@ -103,8 +103,8 @@ void leerCorreo(tGestor & gestor, tListaRegistros & listaReg){
 		if (opcion == 1){
 			correoContestacion (gestor.correos.correo[posicion], respuestaMail, gestor.correos.correo[posicion].destinatario);
 			enviarCorreo (gestor, respuestaMail);
-		}		
-	}	
+		}
+	}
 }
 
 void enviarCorreo (tGestor & gestor, const tCorreo & correo){
@@ -125,13 +125,28 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 }
 
 void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
-	int opcion;
-		
+	int opcion, cont = 0;
+	string id;
+	bool existe = false;
+
 	cout << "Selecciona el numero del correo que deseas borrar: ";
-	cin >> opcion;	
+	cin >> opcion;
 	if (opcion > 0 && opcion <= listaReg.contador){
+		id = listaReg.registro[opcion - 1].idcorreo;
+		
 		if (borrar (listaReg, listaReg.registro[opcion - 1].idcorreo)){
-			cout << "El mensaje se ha eliminado correctamente" << endl;	
+			cout << "El mensaje se ha eliminado correctamente" << endl;
+
+			id = listaReg.registro[opcion - 1].idcorreo;
+			cout << id;system("pause");
+			while(cont < gestor.usuarios.contador && !existe){
+					if((buscar(gestor.usuarios.usuario[cont]->recibidos, id) != -1) || (buscar(gestor.usuarios.usuario[cont]->enviados, id) != -1)){//si no existe el identificador en ninguna lista de registros de ningun usuario, entonces borramos el correo de la lista de correos
+						existe = true;
+		}
+		cont++;
+	}
+	if(!existe && borrar(gestor.correos, id))	//Si no existe el identificador en la bandeja de otros usuarios y se puedo borrar de la lista de correos
+	cout << "Tambien ha sido elmininado de la base de datos" << endl;
 		}
 		else{
 			cout << "El correo seleccionado no existe" << endl;
@@ -161,7 +176,7 @@ void gestionarSesion(tGestor & gestor){
 	tCorreo nuevoCorreo;
 	bool esEntrada = true;
 	int opcion;
-	do{	
+	do{
 		system("cls");
 		mostrarInterFazUsuario(gestor,esEntrada);
 		cin >> opcion;
@@ -184,7 +199,7 @@ void gestionarSesion(tGestor & gestor){
 			}
 			else{
 				borrarCorreo (gestor, gestor.usuarios.usuario[gestor.usuarioActivo]->enviados);
-			}			
+			}
 		}
 		else if (opcion == 4){
 			esEntrada = !esEntrada;
@@ -206,11 +221,11 @@ void mostrarInterFazUsuario (tGestor & gestor, bool esEntrada){
 	if (esEntrada){
 		cout << "entrada";
 		lineasDeCabecera ();
-	} 
+	}
 	else{
 		cout << "salida-";
 		lineasDeCabecera ();
-	} 
+	}
 	lineaDeSeparacion ();
 	if (!esEntrada){
 		cout << "L" << setw(2) << "N" << setw(15) << "DESTINATARIO" << setw(25) << "ASUNTO" << setw(35) << "FECHA" << endl;
@@ -219,13 +234,13 @@ void mostrarInterFazUsuario (tGestor & gestor, bool esEntrada){
 	lineaDeSeparacion ();
 	verBandeja (gestor,esEntrada);
 	lineaDeSeparacion ();
-	mostrarMenu(esEntrada);	
+	mostrarMenu(esEntrada);
 }
 
 void verBandeja (const tGestor & gestor, bool esEntrada){
 	int posicion;
 	tUsuarioPtr usuario = gestor.usuarios.usuario[gestor.usuarioActivo];
-	
+
 	if (!esEntrada){
 		for (int i = 0; i < usuario->enviados.contador; i++){
 			if (buscar (gestor.correos, usuario->enviados.registro[i].idcorreo, posicion)){
