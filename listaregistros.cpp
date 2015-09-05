@@ -17,7 +17,7 @@ void inicializar(tListaRegistros &registros, int capacidadInicial){
 void cargar(tListaRegistros &registros, ifstream& archivo){
 	float elementos, redondeo;
 	tRegistro registro;
-		
+
 	archivo >> elementos;
 	redondeo = (ceil(elementos / 10)) * 10;
 	inicializar (registros, (int)redondeo);
@@ -41,13 +41,13 @@ void insertar(tListaRegistros &registros, tRegistro registro){
 	}
 	registros.registro[registros.contador] = registro;
 	registros.contador++;
-	
+
 }
 
 bool borrar(tListaRegistros &registros, string id){
 	bool borrado = false;
 	int posicion = buscar(registros,id);
-	if(posicion != -1){	//Si se encuentra el registro se elimina 
+	if(posicion != -1){	//Si se encuentra el registro se elimina
 			for (posicion; posicion < registros.contador; posicion++){
 				registros.registro[posicion] = registros.registro[posicion+1]; //Desde la posicion elminada se desplazan una posicion a la izquierda
 		}
@@ -64,16 +64,16 @@ bool correoLeido(tListaRegistros &registros, string id){
 	if(posicion != -1){
 		registros.registro[posicion].leido = true;
 		check = true;
-	}	
+	}
 	return check;
 }
 
 int buscar(const tListaRegistros &registros, string id){
 	int posicion;
 	int ini = 0, fin = registros.contador-1, mitad;
-	
+
 	bool encontrado = false;			//Por defecto no se ha econtrado el elemento que se busca
-	
+
 	while(ini<=fin && !encontrado){		//Mientras que mi rango de busqueda exista y no haya encontrado el elemento
 		mitad = (ini+fin) / 2;
 
@@ -89,7 +89,7 @@ int buscar(const tListaRegistros &registros, string id){
 	}
 	if(encontrado) posicion = mitad;
 	else posicion = -1;
-	
+
 	return posicion;
 }
 
@@ -108,7 +108,7 @@ void redimensionar (tListaRegistros & registros){
 		insertar (listaNueva, registros.registro[i++]);
 	}
 	registros = listaNueva;
-	
+
 }
 
 void destruir (tListaRegistros & registros){

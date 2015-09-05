@@ -20,7 +20,7 @@ bool cargar(tListaCorreos & correos, string dominio){
 	float elementos, redondeo;
 	string ficheroCorreo = dominio + "_" + mailCorreo;
 	archivo.open(ficheroCorreo);
-	if (archivo.is_open()){	
+	if (archivo.is_open()){
 		tCorreo correo;
 		archivo >> elementos;
 		redondeo = (ceil(elementos / 10)) * 10;
@@ -30,7 +30,7 @@ bool cargar(tListaCorreos & correos, string dominio){
 			insertar(correos, correo);
 		}
 		archivo.close();
-		esCargar = true;		
+		esCargar = true;
 	}
 	else{
 		inicializar(correos, MAIL_INICIAL);
@@ -56,14 +56,19 @@ void guardar (const tListaCorreos & correos, string dominio){
 }
 
 void insertar(tListaCorreos & correos, const tCorreo & correo){
+	int posicion;
 	if (correos.contador == correos.capacidad){
 		redimensionar (correos);
 	}
-	correos.correo[correos.contador] = correo;
-	correos.contador++;
+		buscarUsuario(correos, correo.nombre, posicion);
+		for(int i = usuarios.contador; i > posicion; i--)
+			correos.correo[i] = correos.correo[i - 1];
+		correos.correo[posicion] = correo;
+		correos.contador++;
 }
 
-bool buscar (const tListaCorreos & correos, string id, int & pos){ 
+
+bool buscar (const tListaCorreos & correos, string id, int & pos){
 	bool encontrado = false;
 	pos = 0;
 	while (pos < correos.contador && !encontrado){
@@ -72,7 +77,7 @@ bool buscar (const tListaCorreos & correos, string id, int & pos){
 		}
 		else{
 			pos++;
-		} 
+		}
 	}
 	return encontrado;
 }
