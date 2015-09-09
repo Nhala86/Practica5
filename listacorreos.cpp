@@ -85,9 +85,12 @@ bool buscar (const tListaCorreos & correos, string id, int & pos){
 bool borrar(tListaCorreos &correos, string id){
 	bool borrado = false;
 	int posicion;
+	cout << id;
+	system("pause");
 	if(buscar(correos, id , posicion)){
+		system("pause");
 				for (posicion; posicion < correos.contador; posicion++){
-						correos.correo[posicion] = correos.correo[posicion+1];
+						correos.correo[posicion] = correos.correo[posicion + 1];
 					}
 		correos.contador--;
 		borrado = true;
