@@ -35,8 +35,8 @@ int main(){
 		
 	}
 	do{
-		system("cls");
 		opcion = menu(opcion);
+		system("cls");
 		switch (opcion){
 			case 1: if (iniciarSesion (gestor)){ // Al iniciar sesion cargara el correo del usuario correspondiente, si el usuario no existe le devolvera un mensaje de "Usuario no existente"
 						gestionarSesion (gestor);
