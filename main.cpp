@@ -30,11 +30,13 @@ int main(){
 	
 	if (!arrancar (gestor, DOMINIO)){
 		cout << "Error!.. no se han podido cargar el/los fichero/s" << endl;
-		cout << "Se iniciara el programa cn nuevas listas" << endl;
+		cout << "Se iniciara el programa con nuevas listas" << endl;
 		system("pause");
+		system("cls");
 		
 	}
 	do{
+		system("cls");
 		opcion = menu(opcion);
 		system("cls");
 		switch (opcion){

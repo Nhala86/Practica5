@@ -125,31 +125,30 @@ void enviarCorreo (tGestor & gestor, const tCorreo & correo){
 }
 
 void borrarCorreo(tGestor & gestor, tListaRegistros & listaReg){
-	int opcion, cont = 0;
+	int opcion;
+	int cont = 0;
 	string id;
 	bool existe = false;
-
 	cout << "Selecciona el numero del correo que deseas borrar: ";
 	cin >> opcion;
-		if (opcion > 0 && opcion <= listaReg.contador){
-			id = listaReg.registro[opcion - 1].idcorreo;		
-			if (borrar (listaReg, id)){
-				cout << "El mensaje se ha eliminado correctamente" << endl;			
-				while(cont < gestor.usuarios.contador && !existe){
-					if((buscar(gestor.usuarios.usuario[cont]->recibidos, id) != -1) || (buscar(gestor.usuarios.usuario[cont]->enviados, id) != -1)){//si no existe el identificador en ninguna lista de registros de ningun usuario, entonces borramos el correo de la lista de correos
-						existe = true;						
-					}
-					cont++;
+	if (opcion > 0 && opcion <= listaReg.contador){
+		id = listaReg.registro[opcion - 1].idcorreo;		
+		if (borrar (listaReg, id)){
+			cout << "El mensaje se ha eliminado correctamente" << endl;			
+			while(cont < gestor.usuarios.contador && !existe){
+				if((buscar(gestor.usuarios.usuario[cont]->recibidos, id) != -1) || (buscar(gestor.usuarios.usuario[cont]->enviados, id) != -1)){//si no existe el identificador en ninguna lista de registros de ningun usuario, entonces borramos el correo de la lista de correos
+					existe = true;						
 				}
-				if(!existe && borrar(gestor.correos, id)){
-					cout << "Tambien ha sido elmininado de la base de datos" << endl;
-				}					
+				cont++;
 			}
-			else{
-					cout << "El correo seleccionado no existe" << endl;
-			}
-		}
-	
+			if(!existe && borrar(gestor.correos, id)){
+				cout << "Tambien ha sido elmininado de la base de datos" << endl;
+			}						
+		}		
+	}
+	else{
+		cout << "El correo seleccionado no existe" << endl;
+	}
 	system("pause");
 }
 
